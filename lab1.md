@@ -27,4 +27,4 @@
 
 # ER діаграма для фінансового трекера
 
-![](https://github.com/Fireolll/dblabs/blob/main/ER-diagram)
+![](https://github.com/Fireolll/dblabs/blob/main/ER%20diagram)
