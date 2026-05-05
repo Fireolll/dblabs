@@ -40,6 +40,6 @@
 * лікар не може мати лише один візит на виділений час
 # ER діаграма для фінансового трекера
 
-![](https://github.com/Fireolll/dblabs/blob/main/image.png)
+![](https://github.com/Fireolll/dblabs/blob/main/lab1/image.png)
 
 
