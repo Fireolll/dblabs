@@ -167,49 +167,49 @@ create table prescription_item(
 ```
 ### insert запити
 ```sql
-INSERT INTO doctor_specialization (spec_id, spec_name, description) VALUES
+insert into doctor_specialization (spec_id, spec_name, description) values
 (1, 'Терапевт', 'Лікар першого контакту, лікує загальні захворювання'),
 (2, 'Кардіолог', 'Спеціаліст з діагностики та лікування серцево-судинних хвороб'),
 (3, 'Нейрохірург', 'Лікар, що спеціалізується на лікуванні звороб та травм центральнох та переверичної нервової системи');
 
 
-INSERT INTO department (department_id, dep_name, floor) VALUES
+insert into department (department_id, dep_name, floor) values
 (1, 'Терапевтичне', 1),
 (2, 'Кардіологічне', 2),
 (3, 'Нейрохіругрічне', 3);
 
 
-INSERT INTO medication (medication_id, med_name, manufacturer, side_effects, restriction) VALUES
+insert into medication (medication_id, med_name, manufacturer, side_effects, restriction) values
 (1, 'Парацетамол', 'Дарниця', 'Рідко можлива алергічна реакція', 'Не більше 4г на добу'),
 (2, 'Німесил', 'Berlin-Chemie', 'Біль у шлунку, нудота', 'Тільки для дорослих'),
 (3, 'Корвалол', 'Фармак', 'Сонливість, зниження тиску', 'Не вживати з алкоголем');
 
 
-INSERT INTO patient (first_name, last_name, date_of_birth, phone, city, street, building, email) VALUES
+insert into patient (first_name, last_name, date_of_birth, phone, city, street, building, email) values
 ('Степан', 'Павлюк', '2003-05-15', '+380501234567', 'Київ', 'Хрещатик', '1', 'stepapv@ukr.net'),
 ('Валентин', 'Заграйко', '1970-02-25', '+380671234567', 'Київ', 'Свободи', '5', 'valentun970@ukr.net'),
 ('Ганна', 'Шевченко', '2000-03-09', '+380931234567', 'Київ', 'Дерибасівська', '13', 'ann_shev@gmail.com');
 
 
-INSERT INTO doctor (spec_id, dep_id, first_name, last_name, email, phone) VALUES
+insert into doctor (spec_id, dep_id, first_name, last_name, email, phone) values
 (1, 1, 'Олег', 'Коваленко', 'oleg.terapevt@hospital.com', '+380509998801'),
 (2, 2, 'Максим', 'Григоренко', 'max.surgeon@hospital.com', '+380509998802'),
 (3, 3, 'Анна', 'Бойко', 'anna.cardio@hospital.com', '+380509998803');
 
 
-INSERT INTO appointment (patient_id, doctor_id, reason, status, start_time, end_time) VALUES
+insert into appointment (patient_id, doctor_id, reason, status, start_time, end_time) values
 (1, 1, 'Висока температура, кашель', 'закінчено', '2026-05-01 10:00', '2026-05-01 10:30'),
 (2, 2, 'Біль у грудях', 'заплановано', '2026-05-10 14:00', '2026-05-10 14:30'),
 (3, 3, 'Огляд після травми', 'в процесі', '2026-05-06 13:00', '2026-05-06 13:30');
 
 
-INSERT INTO prescription (appointment_id, notes) VALUES
+insert into prescription (appointment_id, notes) values
 (1, 'Дотримуватися постільного режиму, пити багато рідини'),
 (2, 'Уникати стресів та фізичних навантажень'),
 (3, 'Пройти реабілітацію, не допускати високого фізичного навантащення протягом 3 місяців');
 
 
-INSERT INTO prescription_item (prescription_id, medication_id, dosage, instructions) VALUES
+insert into prescription_item (prescription_id, medication_id, dosage, instructions) values
 (1, 1, '500 мг', 'Приймати по 1 таблетці при підвищенні температури вище 38.5 градусів.'),
 (2, 2, '1 пакетик (100 мг)', 'Розчинити у теплій воді. Пити 2 рази на добу для зняття болю в коліні.'),
 (3, 3, '20 крапель', 'Розчинити у 50 мл води. Приймати під час нападів тахікардії.');
