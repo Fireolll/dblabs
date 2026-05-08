@@ -296,3 +296,5 @@ create table medication_restriction (
     restriction_description text not null
 );
 ```
+## ER діаграма для нормалізованої бд
+![](https://github.com/Fireolll/dblabs/blob/main/lab5/ERDnormal.png)
