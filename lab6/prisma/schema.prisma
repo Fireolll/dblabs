@@ -1,0 +1,127 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model appointment {
+  appointment_id Int                @id @default(autoincrement())
+  patient_id     Int
+  doctor_id      Int
+  reason         String
+  status         appointment_status
+  start_time     DateTime           @db.Timestamp(6)
+  end_time       DateTime           @db.Timestamp(6)
+  doctor         doctor             @relation(fields: [doctor_id], references: [doctor_id], onDelete: NoAction, onUpdate: NoAction)
+  patient        patient            @relation(fields: [patient_id], references: [patient_id], onDelete: NoAction, onUpdate: NoAction)
+  prescription   prescription?
+
+  @@unique([doctor_id, start_time])
+}
+
+model city {
+  city_id   Int       @id @default(autoincrement())
+  city_name String    @unique @db.VarChar(20)
+  patient   patient[]
+}
+
+model department {
+  department_id Int      @id
+  dep_name      String   @db.VarChar(20)
+  floor         Int      @db.SmallInt
+  doctor        doctor[]
+}
+
+model doctor {
+  doctor_id             Int                   @id @default(autoincrement())
+  spec_id               Int
+  dep_id                Int
+  first_name            String                @db.VarChar(15)
+  last_name             String                @db.VarChar(15)
+  email                 String                @db.VarChar(30)
+  phone                 String                @db.VarChar(13)
+  appointment           appointment[]
+  department            department            @relation(fields: [dep_id], references: [department_id], onDelete: NoAction, onUpdate: NoAction)
+  doctor_specialization doctor_specialization @relation(fields: [spec_id], references: [spec_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model doctor_specialization {
+  spec_id     Int      @id
+  spec_name   String   @db.VarChar(28)
+  description String?
+  doctor      doctor[]
+}
+
+model manufacturer {
+  manufacturer_id Int          @id @default(autoincrement())
+  manuf_name      String       @unique @db.VarChar(30)
+  medication      medication[]
+}
+
+model medication {
+  medication_id          Int                      @id
+  med_name               String                   @db.VarChar(30)
+  manufacturer_id        Int
+  manufacturer           manufacturer             @relation(fields: [manufacturer_id], references: [manufacturer_id], onDelete: NoAction, onUpdate: NoAction)
+  medication_restriction medication_restriction[]
+  medication_side_effect medication_side_effect[]
+  prescription_item      prescription_item[]
+}
+
+model medication_restriction {
+  restriction_id          Int        @id @default(autoincrement())
+  medication_id           Int
+  restriction_description String
+  medication              medication @relation(fields: [medication_id], references: [medication_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model medication_side_effect {
+  side_effect_id     Int        @id @default(autoincrement())
+  medication_id      Int
+  effect_description String
+  medication         medication @relation(fields: [medication_id], references: [medication_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model patient {
+  patient_id    Int           @id @default(autoincrement())
+  first_name    String        @db.VarChar(15)
+  last_name     String        @db.VarChar(15)
+  date_of_birth DateTime      @db.Date
+  phone         String        @db.VarChar(13)
+  email         String?       @db.VarChar(30)
+  city_id       Int
+  street        String        @db.VarChar(25)
+  building      String        @db.VarChar(4)
+  appointment   appointment[]
+  city          city          @relation(fields: [city_id], references: [city_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model prescription {
+  prescription_id   Int                 @id @default(autoincrement())
+  appointment_id    Int                 @unique
+  notes             String?
+  appointment       appointment         @relation(fields: [appointment_id], references: [appointment_id], onDelete: NoAction, onUpdate: NoAction)
+  prescription_item prescription_item[]
+}
+
+model prescription_item {
+  item_id         Int          @id @default(autoincrement())
+  prescription_id Int
+  medication_id   Int
+  dosage          String       @db.VarChar(20)
+  instructions    String
+  medication      medication   @relation(fields: [medication_id], references: [medication_id], onDelete: NoAction, onUpdate: NoAction)
+  prescription    prescription @relation(fields: [prescription_id], references: [prescription_id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+enum appointment_status {
+   PLANNED @map("заплановано")
+   FINISHED @map("закінчено")
+   CANCELED @map("відмінено")
+   IN_PROCESS @map("в процесі")
+}
