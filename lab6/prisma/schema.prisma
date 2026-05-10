@@ -20,8 +20,9 @@ model appointment {
   doctor         doctor             @relation(fields: [doctor_id], references: [doctor_id], onDelete: NoAction, onUpdate: NoAction)
   patient        patient            @relation(fields: [patient_id], references: [patient_id], onDelete: NoAction, onUpdate: NoAction)
   prescription   prescription?
-
   @@unique([doctor_id, start_time])
+  treatment_id   Int?
+  treatment treatment_plan? @relation(fields:[treatment_id], references: [treatment_id])
 }
 
 model city {
@@ -48,12 +49,12 @@ model doctor {
   appointment           appointment[]
   department            department            @relation(fields: [dep_id], references: [department_id], onDelete: NoAction, onUpdate: NoAction)
   doctor_specialization doctor_specialization @relation(fields: [spec_id], references: [spec_id], onDelete: NoAction, onUpdate: NoAction)
+  is_active Boolean @default(true)
 }
 
 model doctor_specialization {
   spec_id     Int      @id
   spec_name   String   @db.VarChar(28)
-  description String?
   doctor      doctor[]
 }
 
@@ -124,4 +125,12 @@ enum appointment_status {
    FINISHED @map("закінчено")
    CANCELED @map("відмінено")
    IN_PROCESS @map("в процесі")
+}
+
+model treatment_plan {
+  treatment_id  Int           @id @default(autoincrement())
+  title         String        @db.VarChar(100) 
+  description   String        @db.Text         
+  duration_days Int?                 
+  appointments  appointment[] 
 }
